@@ -7,5 +7,6 @@ int grid = (size+padding);
 int objectCount = 27;
 int horizontalCount = 10;
 int verticalCount = 10;
-
+int[][] map = new int[verticalCount+2][horizontalCount+2];
+boolean update = true;
 

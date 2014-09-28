@@ -3,7 +3,7 @@
 
 // global arrays
 int[] funct = new int[objectCount];
-int[][] map = new int[verticalCount+2][horizontalCount+2];
+
 Qbit[] qbi = new Qbit[objectCount];
 
 // set size constants

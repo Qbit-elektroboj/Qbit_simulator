@@ -10,6 +10,7 @@ class Qbit{
  int id;
  int x;
  int y;
+ int thisMap;
  boolean over;
  boolean move;
  boolean pressed;
@@ -27,26 +28,43 @@ class Qbit{
    moved = true;
    live = false;
    for(int i=0; i<4; i++)
-     this.mapList[i] = -1;
+     mapList[i] = -1;
  }
  
  // class basic methods
  
  void display(){
-   if (live) fill (255,0,0,100);
-   else fill(255,255,255,200);
-  rect(xpos+padding/2, ypos+padding/2, size, size, 2); 
+   if(move) update = true;
+    if(over){
+      fill(0);
+        text(mapList[0], mouseX, mouseY-20);
+       text(mapList[1], mouseX+20, mouseY);
+       text(mapList[2], mouseX, mouseY + 30);
+       text(mapList[3], mouseX - 20, mouseY);
+       text(x, mouseX+10, mouseY+10);
+       text(y, mouseX + 10, mouseY-10);
+       fill(255);  
+    }
+     if (live) fill (255,0,0,100);
+     else fill(255,255,255,200);
+     rect(xpos+padding/2, ypos+padding/2, size, size, 2); 
+   
+    
+  
  }
  
  void update(){
    if(over){
      for(int i=0; i<4; i++)
-       if(this.mapList[i] != -1) qbi[this.mapList[i]].live = true;
-   }
+       if(mapList[i] != -1) qbi[mapList[i]].live = true;
+        
+   
+  
+  }
    else
    {
     for(int i=0; i<4; i++)
-     if(this.mapList[i] != -1) qbi[this.mapList[i]].live = false; 
+     if(mapList[i] != -1) qbi[mapList[i]].live = false; 
    }
   if(move){
      releaseMap();
@@ -59,7 +77,7 @@ class Qbit{
     
     snap();
     if(moved){
-      setMap();
+    
       moved = false;
     }
   }
@@ -112,26 +130,28 @@ class Qbit{
    else xpos += grid-xpos%grid;
    if(ypos%grid < grid/2) ypos -= ypos%grid;
    else ypos += grid-ypos%grid;
+   setMap();
  }
  // mapping methods
  void releaseMap(){
-   map[this.x][this.y] = -1;
+   map[x][y] = -1;
    for(int i=0; i<4; i++){
-     if (this.mapList[i] != -1) qbi[this.mapList[i]].mapList[(i+2)%4] = -1;
-     this.mapList[i] = -1;
+     if (mapList[i] != -1) qbi[mapList[i]].mapList[(i+2)%4] = -1;
+     mapList[i] = -1;
    }
  }
  void setMap(){
    x = xpos/grid;
    y = ypos/grid;
-   map[this.x][this.y] = id;
-   if (map[this.x-1][this.y] != -1) this.mapList[3] = map[this.x-1][this.y];
-   if (map[this.x+1][this.y] != -1) this.mapList[1] = map[this.x+1][this.y];
-   if (map[this.x][this.y-1] != -1) this.mapList[0] = map[this.x][this.y-1];
-   if (map[this.x][this.y+1] != -1) this.mapList[2] = map[this.x][this.y+1];
+   map[x][y] = id;
+   thisMap = map[x][y];
+   if (map[x-1][y] != -1) mapList[3] = map[x-1][y];
+   if (map[x+1][y] != -1) mapList[1] = map[x+1][y];
+   if (map[x][y-1] != -1) mapList[0] = map[x][y-1];
+   if (map[x][y+1] != -1) mapList[2] = map[x][y+1];
    
    for(int i=0; i<4; i++)
-     if (this.mapList[i] != -1) qbi[this.mapList[i]].mapList[(i+2)%4] = -1;
+     if (mapList[i] != -1) qbi[mapList[i]].mapList[(i+2)%4] = id;
      
  
  }
